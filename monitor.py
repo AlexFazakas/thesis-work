@@ -29,7 +29,9 @@ class EventHandler(pyinotify.ProcessEvent):
                 if report.data[key] != '':
                     data[key] = report.data[key]
         result = requests.post(API, data=data)
-        print(result)
+        print('Status code: {}, body: {}'.format(
+            result.status_code,
+            result.text))
         print(time.asctime())
 
 handler = EventHandler()
