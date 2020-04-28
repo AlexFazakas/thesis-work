@@ -29,3 +29,8 @@ aws apigatewayv2 create-route \
     --api-id ${APIGATEWAY_ID} \
     --route-key 'POST /add_report' \
     --target integrations/${INTEGRATION_ID}
+
+aws apigatewayv2 create-stage \
+    --api-id ${APIGATEWAY_ID} \
+    --auto-deploy \
+    --stage-name default
