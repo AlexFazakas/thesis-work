@@ -4,11 +4,20 @@ REGION=$(aws configure get region)
 ACCOUNT=$(aws sts get-caller-identity \
             --query Account \
             --output text)
-# aws dynamodb create-table \
-#     --table-name "reports" \
-#     --attribute-definitions AttributeName="Source IP Address",AttributeType=S \
-#     --key-schema AttributeName="Source IP Address",KeyType=HASH \
-#     --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5
+python3 lambda_policy_generator.py ${REGION} ${ACCOUNT}
+aws dynamodb create-table \
+    --table-name "reports" \
+    --attribute-definitions AttributeName="Source IP Address",AttributeType=S \
+    --key-schema AttributeName="Source IP Address",KeyType=HASH \
+    --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5
+
+POLICY_ARN=$(aws iam create-policy \
+            --policy-name lambdaPolicy \
+            --policy-document file://lambda_policy.json | jq '.["Policy"]["Arn"]')
+aws iam attach-role-policy \
+    --role-name lambda_basic_execution \
+    --policy-arn arn:aws:iam::${ACCOUNT}:policy/lambdaPolicy
+echo ${POLICY_ARN}
 
 FUNCTION_ARN=$(aws lambda create-function \
             --function-name add_report \
@@ -44,3 +53,6 @@ aws lambda add-permission \
     --function-name ${FUNCTION_ARN} \
     --principal apigateway.amazonaws.com \
     --source-arn "arn:aws:execute-api:${REGION}:${ACCOUNT}:${APIGATEWAY_ID}/*/*/add_report"
+
+echo "Everything is now setup. The following URL is where you should be sending your reports:"
+echo "https://${APIGATEWAY_ID}.execute-api.${REGION}.amazonaws.com/default/add_report"
