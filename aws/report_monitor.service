@@ -1,0 +1,14 @@
+[Unit]
+Description=Service monitoring apport generated crash reports.
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=20
+User=ubuntu
+ExecStart=/usr/bin/env python3 /etc/report_monitor/monitor.py
+
+[Install]
+WantedBy=multi-user.target

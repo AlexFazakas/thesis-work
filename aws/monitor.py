@@ -13,7 +13,6 @@ import zlib
 import pprint
 
 
-API = sys.argv[1]
 wm = pyinotify.WatchManager()
 
 mask = pyinotify.IN_CREATE
@@ -632,6 +631,10 @@ class EventHandler(pyinotify.ProcessEvent):
     def process_IN_CREATE(self, event):
         print(time.asctime())
         time.sleep(2)
+        API = ''
+        with open('/etc/report_monitor/target.txt', 'r') as f:
+            API = f.read().strip()
+        print(API)
         with open(event.pathname, 'a') as f:
             f.write('Package: gconftool-2')
         subprocess.call(['apport-retrace', '-c', event.pathname])
