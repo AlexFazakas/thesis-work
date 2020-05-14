@@ -7,8 +7,8 @@ ACCOUNT=$(aws sts get-caller-identity \
 python3 lambda_policy_generator.py ${REGION} ${ACCOUNT}
 aws dynamodb create-table \
     --table-name "reports" \
-    --attribute-definitions AttributeName="Source IP Address",AttributeType=S \
-    --key-schema AttributeName="Source IP Address",KeyType=HASH \
+    --attribute-definitions AttributeName="Date",AttributeType=S \
+    --key-schema AttributeName="Date",KeyType=HASH \
     --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5
 
 POLICY_ARN=$(aws iam create-policy \
