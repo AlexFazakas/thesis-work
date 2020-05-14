@@ -18,8 +18,6 @@ wm = pyinotify.WatchManager()
 
 mask = pyinotify.IN_CREATE
 
-#!/usr/bin/env python3
-
 
 class ProblemReport(UserDict):
     def __init__(self, type='Crash', date=None):
