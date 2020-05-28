@@ -40,12 +40,12 @@ th, td {
 </tr>
 {% for index in range %}
 <tr>
-<td> {{ reports[index]['Date'] }} </td>
-<td> {{ reports[index]['Source IP Address'] }} </td>
-<td> {{ reports[index]['ProblemType'] }} </td>
-<td> {{ reports[index]['Architecture'] }} </td>
-<td> {{ reports[index]['DistroRelease'] }} </td>
-<td> {{ reports[index]['ProcCmdline'] }} </td>
+<td> {{ reports[index]['Date']['S'] }} </td>
+<td> {{ reports[index]['Source IP Address']['S'] }} </td>
+<td> {{ reports[index]['ProblemType']['S'] }} </td>
+<td> {{ reports[index]['Architecture']['S'] }} </td>
+<td> {{ reports[index]['DistroRelease']['S'] }} </td>
+<td> {{ reports[index]['ProcCmdline']['S'] }} </td>
 <td><a href="http://localhost:5000/raw_report?report_index={{ index }}"> RAW </a> </td>
 </tr>
 {% endfor %}
