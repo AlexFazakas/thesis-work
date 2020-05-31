@@ -66,13 +66,15 @@ th, td {
 <div class="dropdown">
   <button class="dropbtn">Group reports by</button>
   <div class="dropdown-content">
-    <a href="#">Date</a>
-    <a href="#">IP Address</a>
-    <a href="#">Architecture</a>
-    <a href="#">Distribution</a>
-    <a href="#">Executable</a>
+    <a href="http://0.0.0.0:5000/?group_by=Date">Date</a>
+    <a href="http://0.0.0.0:5000/?group_by=IP">IP Address</a>
+    <a href="http://0.0.0.0:5000/?group_by=Architecture">Architecture</a>
+    <a href="http://0.0.0.0:5000/?group_by=Distribution">Distribution</a>
+    <a href="http://0.0.0.0:5000/?group_by=Executable">Executable</a>
   </div>
 </div>
+<br>
+<br>
 <table style="widh:100%">
 <tr>
 <th>Date</th>
@@ -92,8 +94,8 @@ th, td {
 <td> {{ reports[index]['Architecture'] }} </td>
 <td> {{ reports[index]['DistroRelease'] }} </td>
 <td> {{ reports[index]['ProcCmdline'] }} </td>
-<td><a href="http://localhost:5000/full_report?report_index={{ index }}"> Full report </a> </td>
-<td><a href="http://localhost:5000/raw_report?report_index={{ index }}"> Raw report </a> </td>
+<td><a href="http://localhost:5000/full_report?report_index={{ reports[index]['index'] }}"> Full report </a> </td>
+<td><a href="http://localhost:5000/raw_report?report_index={{ reports[index]['index'] }}"> Raw report </a> </td>
 </tr>
 {% endfor %}
 </table> 
