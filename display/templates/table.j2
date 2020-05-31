@@ -24,10 +24,55 @@ tr:nth-child(odd) {
 th, td {
     padding: 15px;
 }
+
+.dropbtn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {background-color: #ddd;}
+
+.dropdown:hover .dropdown-content {display: block;}
+
+.dropdown:hover .dropbtn {background-color: #3e8e41;}
 </style>
 </head>
 <body>
 <h1>Reports</h1>
+<div class="dropdown">
+  <button class="dropbtn">Group reports by</button>
+  <div class="dropdown-content">
+    <a href="#">Date</a>
+    <a href="#">IP Address</a>
+    <a href="#">Architecture</a>
+    <a href="#">Distribution</a>
+    <a href="#">Executable</a>
+  </div>
+</div>
 <table style="widh:100%">
 <tr>
 <th>Date</th>
@@ -36,17 +81,19 @@ th, td {
 <th>Architecture</th>
 <th>Distribution</th>
 <th>Executable</th>
+<th>Get full report</th>
 <th>Get full (raw) report</th>
 </tr>
 {% for index in range %}
 <tr>
-<td> {{ reports[index]['Date']['S'] }} </td>
-<td> {{ reports[index]['Source IP Address']['S'] }} </td>
-<td> {{ reports[index]['ProblemType']['S'] }} </td>
-<td> {{ reports[index]['Architecture']['S'] }} </td>
-<td> {{ reports[index]['DistroRelease']['S'] }} </td>
-<td> {{ reports[index]['ProcCmdline']['S'] }} </td>
-<td><a href="http://localhost:5000/raw_report?report_index={{ index }}"> RAW </a> </td>
+<td> {{ reports[index]['Date'] }} </td>
+<td> {{ reports[index]['Source IP Address'] }} </td>
+<td> {{ reports[index]['ProblemType'] }} </td>
+<td> {{ reports[index]['Architecture'] }} </td>
+<td> {{ reports[index]['DistroRelease'] }} </td>
+<td> {{ reports[index]['ProcCmdline'] }} </td>
+<td><a href="http://localhost:5000/full_report?report_index={{ index }}"> Full report </a> </td>
+<td><a href="http://localhost:5000/raw_report?report_index={{ index }}"> Raw report </a> </td>
 </tr>
 {% endfor %}
 </table> 

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+</style>
+</head>
+<body>
+{% for k in report %}
+<p> {{ k }} </p>
+<textarea readonly rows="4", cols="50">
+{{ report[k] }}
+</textarea>
+{% endfor %}
+</table> 
+</body>
+</html>
