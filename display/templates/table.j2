@@ -75,6 +75,20 @@ th, td {
 </div>
 <br>
 <br>
+<form name="selectSpecific" method="GET">
+    <label for="date"> Date (format: MMM/DD/YYYY): </label>
+    <input type="text" name="date" value="">
+    <label for="ip"> IP Address: </label>
+    <input type="text" name="ip" value="">
+    <label for="architecture"> Architecture: </label>
+    <input type="text" name="architecture" value="">
+    <label for="distribution"> Distribution: </label>
+    <input type="text" name="distribution" value="">
+    <label for="executable"> Executable: </label>
+    <input type="text" name="executable" value="">
+    <input type="submit" value="Submit">
+</form>
+<br> <br>
 <table style="widh:100%">
 <tr>
 <th>Date</th>
@@ -93,7 +107,7 @@ th, td {
 <td> {{ reports[index]['ProblemType'] }} </td>
 <td> {{ reports[index]['Architecture'] }} </td>
 <td> {{ reports[index]['DistroRelease'] }} </td>
-<td> {{ reports[index]['ProcCmdline'] }} </td>
+<td> {{ reports[index]['ExecutablePath'] }} </td>
 <td><a href="http://localhost:5000/full_report?report_index={{ reports[index]['index'] }}"> Full report </a> </td>
 <td><a href="http://localhost:5000/raw_report?report_index={{ reports[index]['index'] }}"> Raw report </a> </td>
 </tr>

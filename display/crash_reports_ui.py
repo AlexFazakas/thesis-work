@@ -9,6 +9,7 @@ import json
 
 app = Flask(__name__)
 data = []
+visible_reports = []
 file_loader = FileSystemLoader('./templates')
 env = Environment(loader=file_loader)
 
@@ -91,23 +92,71 @@ def translate_group_by_param(group):
     }
     return d[group]
 
+def report_matches_date(report, date):
+    if not date:
+        return True
+    date = date.strip()
+
+    month = report['Date'][4:7] == date[0:3]
+    day = report['Date'][8:10] == date[4:6]
+    print(report['Date'][8:10])
+    print(date[5:7])
+    year = report['Date'][20:24] == date[7:]
+    return day and month and year
+
+def matches_other_specific_fields(report, ip, arch, distro, executable):
+    ip = ip.strip()
+    arch = arch.strip()
+    distro = distro.strip()
+    executable = executable.strip()
+    return not(len(ip) > 0 and not report['Source IP Address'] == ip or\
+        len(arch) > 0 and not report['Architecture'] == arch or\
+        len(distro) > 0 and not report['DistroRelease'] == distro or\
+        len(executable) > 0 and not report['ExecutablePath'] == executable)
+
+def filter_reports(reports, date, ip, arch, distro, executable):
+    res = []
+    for report in reports:
+        if not report_matches_date(report, date):
+            continue
+        if not matches_other_specific_fields(report, ip, arch, distro, executable):
+            continue
+        res.append(report)
+    return res
+
 @app.route('/', methods=['GET'])
 def print_table():
     global data
+    global visible_reports
 
-    reports = data
+    if not visible_reports:
+        visible_reports = data
+    date = request.args.get('date')
+    ip = request.args.get('ip')
+    arch = request.args.get('architecture')
+    distro = request.args.get('distribution')
+    executable = request.args.get('executable')
     group = request.args.get('group_by')
+    if date or ip or arch or distro or executable:
+        visible_reports = filter_reports(data,
+                                         date,
+                                         ip,
+                                         arch,
+                                         distro,
+                                         executable)
+    elif not group:
+        visible_reports = data
     if group:
         if group == 'Date':
-            reports = group_reports_by_date(reports)
+            visible_reports = group_reports_by_date(visible_reports)
         else:
-            grouped = group_by(reports, lambda x: x[translate_group_by_param(group)])
-            reports = []
+            grouped = group_by(visible_reports, lambda x: x[translate_group_by_param(group)])
+            visible_reports = []
             for k in grouped:
                 for r in grouped[k]:
-                    reports.append(r)
+                    visible_reports.append(r)
     template = env.get_template('table.j2')
-    output = template.render(reports=reports, range=range(len(data)))
+    output = template.render(reports=visible_reports, range=range(len(visible_reports)))
     return render_template_string(output)
 
 def main():
