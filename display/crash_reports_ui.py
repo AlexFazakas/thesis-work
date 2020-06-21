@@ -99,8 +99,6 @@ def report_matches_date(report, date):
 
     month = report['Date'][4:7] == date[0:3]
     day = report['Date'][8:10] == date[4:6]
-    print(report['Date'][8:10])
-    print(date[5:7])
     year = report['Date'][20:24] == date[7:]
     return day and month and year
 
